@@ -13,7 +13,7 @@
 }
 
 body {
-    font-family: Fira Sans;
+    font-family: Fira Sans, sans-serif;
     color: var(--black);
     font-size: var(--font-size-base);
     background-color: #FAF5EE;
@@ -32,7 +32,7 @@ input[type="password"],
 input[type="search"],
 select,
 textarea {
-    font-family: Fira Sans;
+    font-family: Fira Sans, sans-serif;
     font-size: 1rem;
     display: block;
     box-sizing: border-box;
@@ -285,7 +285,7 @@ img {
 /* SearchBar */
 .searchBar {
     visibility: hidden;
-    transform: translate(-100px);
+    transform: translateY(-100px);
     background-color: var(--black);
     padding: 4px 0;
     position: absolute;
@@ -294,7 +294,7 @@ img {
 }
 
 .searchBar.open {
-    transform: translate(0);
+    transform: translateY(0);
     transition: transform 0.1s;
 }
 
