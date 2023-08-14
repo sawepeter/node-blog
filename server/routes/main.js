@@ -1,13 +1,23 @@
 const express = require('express');
+const Post = require('../models/Post');
 const router = express.Router();
 
 //Routes
-router.get('', (req, res) => {
+router.get('',  async (req, res) => {
     const locals = {
         title: "Devsawe blog",
         description: "Simple Blog Created with nodeJs, Express & MongoDb."
     }
-    res.render('index', { locals } );
+
+    try {
+        const data = await Post.find();
+        res.render('index', { locals, data } );
+    } catch (error) {
+        console.log(error);
+
+    }
+
+   
 });
 
 router.get('/about', (req, res) => {
@@ -15,3 +25,4 @@ router.get('/about', (req, res) => {
 });
 
 module.exports = router;
+
