@@ -2,17 +2,19 @@ const express = require('express');
 const Post = require('../models/Post');
 const router = express.Router();
 
-//Routes
+/**
+ * GET - Home
+ */
 router.get('',  async (req, res) => {
   
 
     try {
         const locals = {
             title: "Devsawe blog",
-            description: "Simple Blog Created with nodeJs, Express & MongoDb."
+            description: "Blog app powered by NodeJS."
         }
 
-        let perPage = 5;
+        let perPage = 7;
         let page = req.query.page || 1;
 
         const data = await Post.aggregate([ { $sort: {createdAt: -1 } } ])
@@ -28,34 +30,41 @@ router.get('',  async (req, res) => {
             locals,
             data,
             current: page,
-            nextPage: hasNextPage ? nextPage : null
+            nextPage: hasNextPage ? nextPage : null,
+            currentRoute: '/'
          } );
 
     } catch (error) {
         console.log(error);
-
     }
 
-   
 });
 
 router.get('/about', (req, res) => {
-    res.render('about');
+    res.render('about', {
+        currentRoute: '/about'
+    });
 });
+
 
 /**GET Post: id */
 router.get('/post/:id', async (req, res) => {
     try {
         
+        let slug = req.params.id;
+
         const locals = {
             title: "NodeJs Blog",
             description: "Simple Blog powered by NodeJs Backend"
         }
 
-        let slug = req.params.id;
 
         const data = await Post.findById({ _id: slug });
-        res.render('post', { locals, data });
+        res.render('post', { 
+            locals,
+            data,
+            currentRoute: `/post/${slug}` 
+        });
     } catch (error) {
         console.log(error);
     }
@@ -78,11 +87,12 @@ router.post('/search', async (req, res) => {
                 {title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
                 {body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
             ]
-        })
+        });
 
         res.render("search", {
             data,
-            locals
+            locals,
+            currentRoute: '/'
         });
         
     } catch (error) {
